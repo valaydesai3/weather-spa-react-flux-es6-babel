@@ -20257,7 +20257,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20281,46 +20281,101 @@
 	var apiCall = new _apiComponent2.default();
 	
 	var WeatherFormComponent = function (_React$Component) {
-	  _inherits(WeatherFormComponent, _React$Component);
+		_inherits(WeatherFormComponent, _React$Component);
 	
-	  function WeatherFormComponent(props) {
-	    _classCallCheck(this, WeatherFormComponent);
+		function WeatherFormComponent(props) {
+			_classCallCheck(this, WeatherFormComponent);
 	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeatherFormComponent).call(this, props));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeatherFormComponent).call(this, props));
 	
-	    _this.state = { likesCount: 0 };
-	    //this.getData = this.getData.bind(this);
-	    return _this;
-	  }
+			_this.state = {
+				city: 'London'
+			};
+			_this.iconURL = 'http://openweathermap.org/img/w/';
+			_this.changeLocation = _this.changeLocation.bind(_this);
+			_this.getData = _this.getData.bind(_this);
+			_this.state = {
+				name: '',
+				icon: ''
+			};
+			return _this;
+		}
 	
-	  _createClass(WeatherFormComponent, [{
-	    key: 'getData',
-	    value: function getData(place) {
-	      apiCall.get(place).then(function (data) {
-	        console.log(data);
-	      }.bind(this));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'form',
-	        { className: 'input-group' },
-	        _react2.default.createElement('input', { type: 'text', placeholder: 'Enter city and get weather forecast', className: 'form-control', value: '' }),
-	        _react2.default.createElement(
-	          'span',
-	          { className: 'input-group-btn' },
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'submit', className: 'btn btn-secondary', onClick: this.getData('london') },
-	            'Get'
-	          )
-	        )
-	      );
-	    }
-	  }]);
+		_createClass(WeatherFormComponent, [{
+			key: 'changeLocation',
+			value: function changeLocation(e) {
+				this.setState({ city: e.target.value });
+			}
+		}, {
+			key: 'showResult',
+			value: function showResult(response) {
+				this.setState({
+					name: response.name,
+					icon: response.weather[0].icon + '.png',
+					desc: response.weather[0].description,
+					temp: response.main.temp
+				});
+			}
+		}, {
+			key: 'getData',
+			value: function getData(e) {
+				e.preventDefault();
+				var place = this.state.city;
+				apiCall.get(place).then(function (response) {
+					console.log(response);
+					this.showResult(response);
+				}.bind(this));
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var partial;
+				if (this.state.name != '') {
+					partial = _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'h1',
+							null,
+							this.state.name
+						),
+						_react2.default.createElement('img', { src: this.iconURL + this.state.icon }),
+						_react2.default.createElement(
+							'h2',
+							null,
+							this.state.temp
+						),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							'span',
+							null,
+							this.state.desc
+						)
+					);
+				}
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'form',
+						{ className: 'input-group' },
+						_react2.default.createElement('input', { type: 'text', name: 'city', placeholder: 'Enter city and get weather forecast', className: 'form-control', onChange: this.changeLocation }),
+						_react2.default.createElement(
+							'span',
+							{ className: 'input-group-btn' },
+							_react2.default.createElement(
+								'button',
+								{ type: 'button', className: 'btn btn-secondary', onClick: this.getData },
+								'Get'
+							)
+						)
+					),
+					partial
+				);
+			}
+		}]);
 	
-	  return WeatherFormComponent;
+		return WeatherFormComponent;
 	}(_react2.default.Component);
 	
 	exports.default = WeatherFormComponent;
@@ -20345,7 +20400,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var rootUrl = 'http://api.openweathermap.org/data/2.5/weather?q=';
-	var apiUrl = '&appid=398950a8797aa050e609dd1ff1bd0c2f';
+	var apiUrl = '&appid=398950a8797aa050e609dd1ff1bd0c2f&units=metric';
 	
 	var Api = function () {
 	    function Api() {

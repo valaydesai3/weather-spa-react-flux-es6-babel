@@ -5,9 +5,8 @@ import WeatherFormComponent from './weather-component.jsx';
 class App extends React.Component {
   render () {
     return (
-		<div>
-			<p> Hello React!</p>
-			<WeatherFormComponent />
+		<div>			
+			<WeatherFormComponent />			
 		</div>
 	);
   }

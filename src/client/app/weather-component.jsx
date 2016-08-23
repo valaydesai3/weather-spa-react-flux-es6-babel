@@ -6,21 +6,30 @@ let apiCall = new Api();
 class WeatherFormComponent extends React.Component {
 
   constructor(props) {
-    super(props);
-    this.state = {likesCount : 0};
-    //this.getData = this.getData.bind(this);
-  }
+		super(props);
+		this.state = {
+			city: 'London'
+		}
+		this.changeLocation = this.changeLocation.bind(this);
+		this.getData = this.getData.bind(this);
+	}
   
-	getData(place) {
+	changeLocation(e) {
+		this.setState({city: e.target.value});
+	}
+  
+	getData(e) {
+		e.preventDefault();	
+		let place = this.state.city;
 		apiCall.get(place)
-            .then(function(data) {
-                console.log(data);
+            .then(function(response) {
+                console.log(response);
         }.bind(this));
 	}
 
   render() {
     return (
-      <form className="input-group"><input type="text" placeholder="Enter city and get weather forecast" className="form-control" value="" /><span className="input-group-btn"><button type="submit" className="btn btn-secondary" onClick={this.getData('london')}>Get</button></span></form>
+      <form className="input-group"><input type="text" name="city" placeholder="Enter city and get weather forecast" className="form-control" onChange={this.changeLocation} /><span className="input-group-btn"><button type="button" className="btn btn-secondary" onClick={this.getData}>Get</button></span></form>
     );
   }
 

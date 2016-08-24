@@ -45,8 +45,9 @@ class WeatherFormComponent extends React.Component {
   render() {
 	var partial;
 	if(this.state.name != ''){
-		partial = <div><h1>{this.state.name}</h1><img src={this.iconURL+this.state.icon} /><h2>{this.state.temp} &#8451;</h2><br/>
-				  <span>{this.state.desc}</span></div>
+		partial = <div className="container"><div className="col-lg-12 col-md-12 col-xs-12"><h1>{this.state.name}<img src={this.iconURL+this.state.icon} 		/></h1></div>
+		<div className="col-md-9"><h2>{this.state.temp} &#8451;</h2></div>
+		</div>
 	}
     return (
       <div>
